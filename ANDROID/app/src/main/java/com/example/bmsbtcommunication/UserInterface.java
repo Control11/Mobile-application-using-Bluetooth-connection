@@ -49,8 +49,7 @@ public class UserInterface extends AppCompatActivity {
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build();
     private Set<BluetoothDevice> devicesFoundedDuringScanning = new HashSet<>();
-    //    ScanFilter.Builder filter = new ScanFilter.Builder().setServiceUuid(
-//            ParcelUuid.fromString(ENVIRONMENTAL_SERVICE_UUID.toString()));
+
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
     private LocationManager locationManager;
@@ -72,7 +71,7 @@ public class UserInterface extends AppCompatActivity {
             super.onConnectionStateChange(gatt, status, newState);
             if(status == BluetoothGatt.GATT_SUCCESS){
                 if (newState == BluetoothProfile.STATE_CONNECTED){
-                    bluetoothGatt = gatt; //it’s the gateway to other BLE operations such as service discovery, reading and writing data, and even performing a connection teardown
+                    bluetoothGatt = gatt; 
                     String info = "Connected to " + gatt.getDevice().getName();
                     connectedDeviceText.setText(info);
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
@@ -88,7 +87,6 @@ public class UserInterface extends AppCompatActivity {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
-//            bluetoothGatt = gatt;
             System.out.println("-------------------------------------------------" + gatt.getServices() + " status: " + status);
             for (BluetoothGattService service : gatt.getServices()) {
                 for (BluetoothGattCharacteristic characteristic   : service.getCharacteristics()) {
@@ -166,11 +164,6 @@ public class UserInterface extends AppCompatActivity {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             askToEnableLocation();
         }
-//        registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
-//        if (bluetoothService != null) {
-//            final boolean result = bluetoothService.connect(deviceAddress);
-//            Log.d(TAG, "Connect request result=" + result);
-//        }
     }
 
     @Override
@@ -208,13 +201,6 @@ public class UserInterface extends AppCompatActivity {
 
 
 //ASKING USER TO ENABLE THE NECESSARY STUFF
-
-
-    //    private void askToEnableLocation() {
-////        Intent enableLocation = new Intent(Gp);
-//        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//    }
-
     private void askToEnableBT() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
